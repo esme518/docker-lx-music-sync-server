@@ -2,19 +2,25 @@
 # Dockerfile for lx-music-sync-server
 #
 
-FROM alpine as source
+FROM node:16-alpine as builder
 
-ARG URL=https://api.github.com/repos/lyswhut/lx-music-sync-server/releases/latest
-
-WORKDIR /server
+WORKDIR /build
 
 RUN set -ex \
-    && apk add --update --no-cache curl \
-    && wget -O server.zip $(curl -s $URL | grep browser_download_url | egrep -o "https.+\.zip") \
-    && unzip server.zip && rm server.zip
+    && apk add --update --no-cache \
+           git \
+           g++ \
+           make \
+           py3-pip \
+    && git clone https://github.com/lyswhut/lx-music-sync-server.git . \
+    && git checkout $(git tag | sort -V | tail -1) \
+    && npm ci && npm run build \
+    && mkdir dst \
+    && mv server config.js index.js package-lock.json package.json -t dst \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 FROM node:16-alpine
-COPY --from=source /server /server
+COPY --from=builder /build/dst /server
 
 WORKDIR /server
 VOLUME /server/data
