@@ -20,7 +20,13 @@ WORKDIR /server
 VOLUME /server/data
 
 RUN set -ex \
-    && npm ci --omit=dev
+    && apk add --update --no-cache --virtual .gyp \
+           g++ \
+           make \
+           py3-pip \
+    && npm ci --omit=dev \
+    && apk del .gyp \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 ENV NODE_ENV 'production'
 ENV LOG_PATH '/server/data/logs'
