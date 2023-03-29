@@ -26,6 +26,7 @@ WORKDIR /server
 VOLUME /server/data
 
 RUN set -ex \
+    && apk add --update --no-cache tini \
     && apk add --update --no-cache --virtual .gyp \
            g++ \
            make \
@@ -48,4 +49,5 @@ ENV BIND_IP '0.0.0.0'
 
 EXPOSE 9527
 
+ENTRYPOINT ["/sbin/tini","--"]
 CMD ["npm","start"]
