@@ -33,7 +33,7 @@ RUN set -ex \
            py3-pip \
     && npm ci --omit=dev \
     && apk del .gyp \
-    && rm -rf /tmp/* /var/cache/apk/*
+    && rm -rf /tmp/* /var/cache/apk/* /root/.npm/*
 
 ENV NODE_ENV 'production'
 ENV LOG_PATH '/server/data/logs'
