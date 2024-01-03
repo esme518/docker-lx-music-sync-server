@@ -39,7 +39,7 @@ ENV NODE_ENV 'production'
 ENV LOG_PATH '/server/data/logs'
 
 ENV PORT 9527
-ENV BIND_IP '0.0.0.0'
+ENV BIND_IP '::'
 # ENV PROXY_HEADER 'x-real-ip'
 # ENV SERVER_NAME 'My Sync Server'
 # ENV MAX_SNAPSHOT_NUM '10'
