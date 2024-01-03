@@ -2,7 +2,7 @@
 # Dockerfile for lx-music-sync-server
 #
 
-FROM node:18-alpine as builder
+FROM node:20-alpine as builder
 
 WORKDIR /build
 
@@ -19,7 +19,7 @@ RUN set -ex \
     && mv server config.js index.js package-lock.json package.json -t dst \
     && rm -rf /tmp/* /var/cache/apk/*
 
-FROM node:18-alpine
+FROM node:20-alpine
 COPY --from=builder /build/dst /server
 
 WORKDIR /server
